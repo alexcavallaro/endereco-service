@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.cavallaro</groupId>
 	<artifactId>endereco-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-0</version>
 	<packaging>war</packaging>
 	<name>endereco-service</name>
 	<description>endereco-service</description>
