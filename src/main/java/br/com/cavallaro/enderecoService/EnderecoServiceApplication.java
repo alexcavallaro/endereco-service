@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,9 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class EnderecoServiceApplication {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(EnderecoServiceApplication.class);
+
+	   
     private static final String SAO_PAULO = "São Paulo";
     private static final String RIO = "Rio de Janeiro";
     
@@ -26,11 +31,14 @@ public class EnderecoServiceApplication {
 	
 	@GetMapping("/endereco/{cep}")
 	public Object getEndereco(@PathVariable String cep) {
+		LOGGER.info("/endereco/{cep} "+cep);
 	    return (new RestTemplate()).getForObject("https://viacep.com.br/ws/"+cep+"/json", Object.class);
 	}
 
 	@GetMapping("/estados")
 	public Object getEstados() {
+		LOGGER.info("/estados");
+		
 		ArrayList<LinkedHashMap<String, String>> estados = (new RestTemplate()).getForObject("https://servicodados.ibge.gov.br/api/v1/localidades/estados/", ArrayList.class);
 		
 		ArrayList<LinkedHashMap<String, String>> clone = (ArrayList<LinkedHashMap<String, String>>) estados.clone();
@@ -60,11 +68,11 @@ public class EnderecoServiceApplication {
 		   return name1.compareTo(name2);
 	    }
 	};
-	//@GetMapping(path = "/endereco/{cep}", produces = "application/json")
 	
 	@GetMapping("/municipios/{estadoId}")
 	public Object getMunicipios(@PathVariable int estadoId) {
-	    return (new RestTemplate()).getForObject("https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+estadoId+"/municipios", Object.class);
+		LOGGER.info("/municipios/{estadoId} "+estadoId);
+		return (new RestTemplate()).getForObject("https://servicodados.ibge.gov.br/api/v1/localidades/estados/"+estadoId+"/municipios", Object.class);
 	}
 
 }
